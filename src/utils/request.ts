@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 import { pickBy } from 'lodash';
 
 const parsingEmptyValueParams = params =>
@@ -9,18 +10,17 @@ const RequestApi = axios.create();
 RequestApi.defaults.baseURL = 'http://api.worklifebell.ryulth.com/api';
 
 RequestApi.interceptors.request.use(
-  config => {
+  async config => {
     const parsedParams = parsingEmptyValueParams(config.params);
     config.params = parsedParams;
-    //
-    // // const accessToken = window.localStorage.getItem('access_token');
-    // const accessToken = '';
-    // const isLoginURL = config.url && config.url.includes('auth');
-    //
-    // if (accessToken && isLoginURL === false) {
-    //   config.headers.Authorization = `bearer ${accessToken}`;
-    // }
-    //
+
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const isLoginURL = config.url && config.url.includes('auth');
+
+    if (accessToken && isLoginURL === false) {
+      config.headers.Authorization = `bearer ${accessToken}`;
+    }
+
     return config;
   },
   error => Promise.reject(error),

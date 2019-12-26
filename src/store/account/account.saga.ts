@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { AsyncStorage } from 'react-native';
 import { Alert } from 'react-native';
 
 import { AccountApi } from '../../api';
@@ -10,7 +11,10 @@ export function* login(action) {
     const response = yield call(AccountApi.login, action.payload);
     const { accessToken, refreshToken } = response;
 
-    console.log(`accessToken: ${accessToken}, refreshToken: ${refreshToken}`);
+    yield Promise.all([
+      AsyncStorage.setItem('accessToken', accessToken),
+      AsyncStorage.setItem('refreshToken', refreshToken),
+    ]);
 
     yield put(
       AccountActionCreators.login.success({
@@ -25,12 +29,14 @@ export function* login(action) {
 
 export function* register(action) {
   try {
-    console.log('register:', action);
     yield put(AccountActionCreators.register.request());
     const response = yield call(AccountApi.register, action.payload);
     const { accessToken, refreshToken } = response;
 
-    console.log(`accessToken: ${accessToken}, refreshToken: ${refreshToken}`);
+    yield Promise.all([
+      AsyncStorage.setItem('accessToken', accessToken),
+      AsyncStorage.setItem('refreshToken', refreshToken),
+    ]);
 
     yield put(
       AccountActionCreators.register.success({

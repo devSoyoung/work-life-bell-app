@@ -16,6 +16,12 @@ const accountReducer = (state = initialState, action) => {
         login: true,
       };
 
+    case AccountActionTypes.REGISTER.SUCCESS:
+      return {
+        ...state,
+        login: true,
+      };
+
     default:
       return state;
   }

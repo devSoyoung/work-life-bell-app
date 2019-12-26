@@ -36,11 +36,6 @@ function JoinPage({ loginState, navigation, register }: JoinPageProps) {
     navigation.navigate('Login');
   };
 
-  const handleClickJoinButton = () => {
-    console.log('회원가입 페이지');
-    register({ email, password });
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>work life bell</Text>
@@ -63,7 +58,9 @@ function JoinPage({ loginState, navigation, register }: JoinPageProps) {
           style={styles.button}
           success
           disabled={!(isValidEmail && isValidPassword)}
-          onPress={handleClickJoinButton}
+          onPress={() => {
+            register({ email, password });
+          }}
         >
           <Text style={styles.buttonText}>회원등록</Text>
         </Button>
