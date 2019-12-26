@@ -9,13 +9,13 @@ import {
   AccountActionCreators
 } from '../store/account/account.action';
 
-type LoginPageProps = {
+type JoinPageProps = {
   navigation: NavigationStackProp,
   loginState: boolean,
-  login: Function,
+  register: Function,
 };
 
-function LoginPage({ loginState, navigation, login }: LoginPageProps) {
+function JoinPage({ loginState, navigation, register }: JoinPageProps) {
   if (loginState) {
     navigation.navigate('Home');
   }
@@ -28,18 +28,23 @@ function LoginPage({ loginState, navigation, login }: LoginPageProps) {
   }, [email]);
 
   const isValidPassword = useMemo(() => {
-    return true;
     // return password.length >= 8;
+    return true;
   }, [password]);
 
+  const handleClickLoginButton = () => {
+    navigation.navigate('Login');
+  };
+
   const handleClickJoinButton = () => {
-    navigation.navigate('Join');
+    console.log('회원가입 페이지');
+    register({ email, password });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>work life bell</Text>
-      <Text style={styles.subTitle}>서비스 이용을 위해 로그인이 필요합니다.</Text>
+      <Text style={styles.subTitle}>워라밸에 가입하고 근무시간을 관리해보세요 :)</Text>
       <TextInput
         style={styles.input}
         onChangeText={text => setEmail(text)}
@@ -56,20 +61,18 @@ function LoginPage({ loginState, navigation, login }: LoginPageProps) {
       <View style={styles.buttonContainer}>
         <Button
           style={styles.button}
-          info
+          success
           disabled={!(isValidEmail && isValidPassword)}
-          onPress={() => {
-            login({ email, password });
-          }}
+          onPress={handleClickJoinButton}
         >
-          <Text style={styles.buttonText}>로그인</Text>
+          <Text style={styles.buttonText}>회원등록</Text>
         </Button>
         <Button
           style={styles.button}
-          onPress={handleClickJoinButton}
-          success
+          onPress={handleClickLoginButton}
+          info
         >
-          <Text style={styles.buttonText}>회원가입</Text>
+          <Text style={styles.buttonText}>로그인</Text>
         </Button>
       </View>
     </View>
@@ -81,13 +84,13 @@ const mapStateToProps = (state, ownProps: any = {}) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  login: inputAccountData => dispatch(AccountActionCreators.login(inputAccountData))
+  register: inputAccountData => dispatch(AccountActionCreators.register(inputAccountData))
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(LoginPage);
+)(JoinPage);
 
 const styles = StyleSheet.create({
   container: {

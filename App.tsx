@@ -12,6 +12,7 @@ import configureStore from './src/store/configureStore';
 import PaddingHeader from './src/layouts/PaddingHeader';
 
 import MainPage from './src/pages/MainPage';
+import JoinPage from './src/pages/JoinPage';
 import LoginPage from './src/pages/LoginPage';
 
 const initialState = {};
@@ -26,6 +27,12 @@ const MainNavigator = createStackNavigator({
   },
   Login: {
     screen: LoginPage,
+    navigationOptions: {
+      header: <PaddingHeader />,
+    }
+  },
+  Join: {
+    screen: JoinPage,
     navigationOptions: {
       header: <PaddingHeader />,
     }
