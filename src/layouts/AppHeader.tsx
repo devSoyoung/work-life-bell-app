@@ -8,7 +8,7 @@ export default function AppHeader() {
     <Container style={styles.header}>
       <Header>
         <Body>
-          <Title>Off The Work : 출근 기록하기</Title>
+          <Title>OFF THE WORK : 출근 기록하기</Title>
         </Body>
       </Header>
     </Container>

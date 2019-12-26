@@ -1,22 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { Content, Container, Root } from 'native-base';
+import { Provider } from 'react-redux';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+
+import { Root } from 'native-base';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import AppHeader from './components/AppHeader';
+
+import configureStore from './src/store/configureStore';
+
+import PaddingHeader from './src/layouts/PaddingHeader';
+
+import MainPage from './src/pages/MainPage';
+import LoginPage from './src/pages/LoginPage';
+
+const initialState = {};
+const { store, persistor } = configureStore(initialState);
+
+const MainNavigator = createStackNavigator({
+  Home: {
+    screen: MainPage,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Login: {
+    screen: LoginPage,
+    navigationOptions: {
+      header: <PaddingHeader />,
+    }
+  },
+}, {
+  initialRouteName: 'Home',
+});
+
+const Navigation = createAppContainer(MainNavigator);
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    async function loadFont() {
+    (async function() {
       await Font.loadAsync({
-        Roboto: require("native-base/Fonts/Roboto.ttf"),
-        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+        Roboto: require('native-base/Fonts/Roboto.ttf'),
+        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
       });
       setLoading(false);
-    }
-    loadFont();
+    })();
   }, []);
 
   if (loading) {
@@ -28,20 +57,10 @@ export default function App() {
   }
 
   return (
-    <Container>
-      <AppHeader />
-      <Content>
-        <Text>Hello, World!</Text>
-      </Content>
-    </Container>
+    <Provider store={store}>
+      <Root>
+        <Navigation />
+      </Root>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
