@@ -14,8 +14,9 @@ RequestApi.interceptors.request.use(
     const parsedParams = parsingEmptyValueParams(config.params);
     config.params = parsedParams;
 
-    const accessToken = window.localStorage.getItem('access_token');
-    const isLoginURL = config.url && config.url.includes('accounts');
+    // const accessToken = window.localStorage.getItem('access_token');
+    const accessToken = '';
+    const isLoginURL = config.url && config.url.includes('auth');
 
     if (accessToken && isLoginURL === false) {
       config.headers.Authorization = `bearer ${accessToken}`;
@@ -48,7 +49,7 @@ RequestApi.interceptors.response.use(
       // token refresh 요청
     }
 
-    message.error('요청이 실패하였습니다.', 1.5);
+    console.error('요청이 실패하였습니다.');
     return Promise.reject(error);
   },
 );

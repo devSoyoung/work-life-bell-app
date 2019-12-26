@@ -27,19 +27,10 @@ export function makeActionCreator(actionType: string): Function {
   return payload => ({ type: actionType, payload });
 }
 
-type ActionCreator = {
-  type: string,
-  payload?: Any,
-  request: Function,
-  success: Function,
-  failure: Function,
-};
-
-export function makeAsyncActionCreator(action) {
-  const actionCreator:ActionCreator = makeActionCreator(action.INDEX);
+export function makeAsyncActionCreator(action): Function {
+  const actionCreator:Function = makeActionCreator(action.INDEX);
   actionCreator.request = makeActionCreator(action.REQUEST);
   actionCreator.success = makeActionCreator(action.SUCCESS);
   actionCreator.failure = makeActionCreator(action.FAILURE);
-  console.log('asyncActionCreator:', actionCreator);
   return actionCreator;
 }
