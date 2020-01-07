@@ -1,11 +1,19 @@
 import { combineReducers } from 'redux';
 
-import workReducer from './work/work.reducer';
-import authReducer from './auth/auth.reducer';
+import accountReducer from './account/account.reducer';
+import attendanceReducer from './attendance/attendance.reducer';
+
+import { initialState as accountInitialState } from './account/account.reducer';
+import { initialState as attendanceInitialState } from './attendance/attendance.reducer';
 
 export default function createRootReducer() {
   return combineReducers({
-    work: workReducer,
-    auth: authReducer,
+    account: accountReducer,
+    attendance: attendanceReducer,
   });
 }
+
+export const initialState = {
+  account: accountInitialState,
+  attendance: attendanceInitialState,
+};

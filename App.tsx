@@ -12,9 +12,11 @@ import configureStore from './src/store/configureStore';
 import PaddingHeader from './src/layouts/PaddingHeader';
 
 import MainPage from './src/pages/MainPage';
+import JoinPage from './src/pages/JoinPage';
 import LoginPage from './src/pages/LoginPage';
 
-const initialState = {};
+import { initialState } from './src/store/createRootReducer';
+
 const { store, persistor } = configureStore(initialState);
 
 const MainNavigator = createStackNavigator({
@@ -26,6 +28,12 @@ const MainNavigator = createStackNavigator({
   },
   Login: {
     screen: LoginPage,
+    navigationOptions: {
+      header: <PaddingHeader />,
+    }
+  },
+  Join: {
+    screen: JoinPage,
     navigationOptions: {
       header: <PaddingHeader />,
     }
