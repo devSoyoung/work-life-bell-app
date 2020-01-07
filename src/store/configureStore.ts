@@ -8,6 +8,8 @@ import { persistStore, persistReducer } from 'redux-persist';
 import createRootReducer from './createRootReducer';
 import createRootSaga from './createRootSaga';
 
+import StateType from '../types/store';
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
@@ -16,11 +18,7 @@ const persistConfig = {
 
 const sagaMiddleware = createSagaMiddleware();
 
-type InitialState = {
-
-};
-
-export default (initialState: InitialState) => {
+export default (initialState: StateType) => {
   const middleWares = [sagaMiddleware];
 
   const persistedReducer = persistReducer(

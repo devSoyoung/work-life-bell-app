@@ -15,7 +15,8 @@ import MainPage from './src/pages/MainPage';
 import JoinPage from './src/pages/JoinPage';
 import LoginPage from './src/pages/LoginPage';
 
-const initialState = {};
+import { initialState } from './src/store/createRootReducer';
+
 const { store, persistor } = configureStore(initialState);
 
 const MainNavigator = createStackNavigator({

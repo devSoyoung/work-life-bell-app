@@ -1,10 +1,7 @@
 import { AccountActionTypes } from './account.action';
+import AccountStateType from '../../types/store/account';
 
-type AuthState = {
-  login: boolean,
-};
-
-export const initialState: AuthState = {
+export const initialState: AccountStateType = {
   login: false,
 };
 

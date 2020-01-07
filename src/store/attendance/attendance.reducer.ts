@@ -1,11 +1,12 @@
 import { AttendanceActionTypes } from './attendance.action';
 
-type AuthState = {
-  isFetchingTodayLog: boolean,
-};
+import AttendanceStateType from '../../types/store/attendance';
+import WorkState from '../../types/workState';
 
-export const initialState: AuthState = {
-  isFetchingTodayLog: false,
+export const initialState: AttendanceStateType = {
+  workState: WorkState.BEFORE_WORK,
+  isRequestingTodayLog: false,
+  isRequestingOnwork: false,
 };
 
 const accountReducer = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const accountReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingTodayLog: false,
+        workState: action.payload.workState,
       };
 
     case AttendanceActionTypes.FETCH_TODAY_LOG_FAILURE:
