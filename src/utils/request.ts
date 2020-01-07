@@ -18,7 +18,7 @@ RequestApi.interceptors.request.use(
     const isLoginURL = config.url && config.url.includes('auth');
 
     if (accessToken && isLoginURL === false) {
-      config.headers.Authorization = `bearer ${accessToken}`;
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
     return config;
