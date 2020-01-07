@@ -10,13 +10,13 @@ export const initialState: AuthState = {
 
 const accountReducer = (state = initialState, action) => {
   switch(action.type) {
-    case AccountActionTypes.LOGIN.SUCCESS:
+    case AccountActionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         login: true,
       };
 
-    case AccountActionTypes.REGISTER.SUCCESS:
+    case AccountActionTypes.REGISTER_SUCCESS:
       return {
         ...state,
         login: true,

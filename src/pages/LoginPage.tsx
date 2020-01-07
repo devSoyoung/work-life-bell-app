@@ -20,8 +20,8 @@ function LoginPage({ loginState, navigation, login }: LoginPageProps) {
     navigation.navigate('Home');
   }
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test@test.com');
+  const [password, setPassword] = useState('password');
 
   const isValidEmail = useMemo(() => {
     return /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(email);
@@ -81,7 +81,7 @@ const mapStateToProps = (state, ownProps: any = {}) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  login: inputAccountData => dispatch(AccountActionCreators.login(inputAccountData))
+  login: inputAccountData => dispatch(AccountActionCreators.login(inputAccountData)),
 });
 
 export default connect(

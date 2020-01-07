@@ -1,5 +1,4 @@
 import RequestApi from '../utils/request';
-import axios from 'axios';
 
 type AccountData = {
   email: string,
@@ -8,13 +7,13 @@ type AccountData = {
 
 const login = (accountData: AccountData) => {
   return RequestApi.post('/auth/email/login', {
-    ...accountData
+    ...accountData,
   })
 };
 
 const register = (accountData: AccountData) => {
   return RequestApi.post('/auth/email/register', {
-    ...accountData
+    ...accountData,
   })
 };
 

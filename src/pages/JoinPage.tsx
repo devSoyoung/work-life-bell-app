@@ -81,7 +81,7 @@ const mapStateToProps = (state, ownProps: any = {}) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  register: inputAccountData => dispatch(AccountActionCreators.register(inputAccountData))
+  register: inputAccountData => dispatch(AccountActionCreators.register(inputAccountData)),
 });
 
 export default connect(
