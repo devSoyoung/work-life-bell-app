@@ -8,6 +8,7 @@ export const initialState: AttendanceStateType = {
   workState: WorkState.BEFORE_WORK,
   isRequestingTodayLog: false,
   isRequestingOnwork: false,
+  isRequestingOffwork: false,
   onWorkDateTime: '',
   offWorkDateTime: '',
   workTime: [0, 0, 0],
@@ -27,6 +28,7 @@ const accountReducer = (state = initialState, action) => {
         isFetchingTodayLog: false,
         workState: action.payload.workState,
         onWorkDateTime: action.payload.onWorkDateTime,
+        offWorkDateTime: action.payload.offWorkDateTime,
         workTime: action.payload.workTime,
       };
 
@@ -55,6 +57,26 @@ const accountReducer = (state = initialState, action) => {
       return {
         ...state,
         workTime: action.payload,
+      };
+
+    case AttendanceActionTypes.SET_OFFWORK_REQUEST:
+      return {
+        ...state,
+        isRequestingOffwork: true,
+      };
+
+    case AttendanceActionTypes.SET_OFFWORK_SUCCESS:
+      return {
+        ...state,
+        isRequestingOffwork: false,
+        offWorkDateTime: action.payload.offWorkDateTime,
+        workState: WorkState.OFF_WORK,
+      };
+
+    case AttendanceActionTypes.SET_OFFWORK_FAILURE:
+      return {
+        ...state,
+        isRequestingOffwork: false,
       };
 
     default:
