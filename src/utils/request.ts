@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 import { pickBy } from 'lodash';
 
 const parsingEmptyValueParams = params =>
@@ -14,7 +14,8 @@ RequestApi.interceptors.request.use(
     const parsedParams = parsingEmptyValueParams(config.params);
     config.params = parsedParams;
 
-    const accessToken = await AsyncStorage.getItem('accessToken');
+    const tokenString = await SecureStore.getItemAsync('accessToken');
+    const accessToken = JSON.parse(tokenString);
     const isLoginURL = config.url && config.url.includes('auth');
 
     if (accessToken && isLoginURL === false) {
