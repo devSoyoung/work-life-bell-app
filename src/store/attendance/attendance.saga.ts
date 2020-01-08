@@ -7,7 +7,6 @@ import { AttendanceActionTypes, AttendanceActionCreators } from './attendance.ac
 import WorkState from '../../types/workState';
 
 export function* fetchTodayLog() {
-  console.log('fetchTodayLog');
   try {
     yield put(AttendanceActionCreators.fetchTodayLogRequest());
     const response = yield call(AttendanceApi.todayAttendanceLog);
@@ -20,9 +19,15 @@ export function* fetchTodayLog() {
     );
 
   } catch (error) {
-    console.log('error:', error.response);
-    // Alert.alert('로그인 실패', '일치하는 사용자를 찾을 수 없습니다.\n이메일과 비밀번호를 다시 확인 해 주세요.');
-    yield put(AttendanceActionCreators.fetchTodayLogFailure(error));
+    if (error.response.status === 400) {
+      yield put(AttendanceActionCreators.fetchTodayLogSuccess({
+        workState: WorkState.BEFORE_WORK,
+        onWorkDateTime: '',
+      }))
+    } else {
+      console.log('error:', error.response);
+      yield put(AttendanceActionCreators.fetchTodayLogFailure(error));
+    }
   }
 }
 

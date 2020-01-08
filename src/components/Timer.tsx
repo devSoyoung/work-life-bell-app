@@ -24,7 +24,7 @@ function Timer({ onWorkDateTime, offWorkDateTime }: TimerProps) {
 
       <Text style={styles.subtitle}>오늘 일한 시간</Text>
       <Text style={styles.timer}>
-        {padNumber(workingTime.hour(), 2)} : {padNumber(workingTime.minutes(), 2)} : {padNumber(workingTime.seconds(), 2)}
+        {padNumber(workingTime.hour() || 0, 2)} : {padNumber(workingTime.minutes() || 0, 2)} : {padNumber(workingTime.seconds() || 0, 2)}
       </Text>
     </View>
   );

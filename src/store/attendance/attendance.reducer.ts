@@ -8,6 +8,7 @@ export const initialState: AttendanceStateType = {
   isRequestingTodayLog: false,
   isRequestingOnwork: false,
   onWorkDateTime: '',
+  offWorkDateTime: '',
 };
 
 const accountReducer = (state = initialState, action) => {
