@@ -11,10 +11,11 @@ import WorkState from '../types/workState';
 type ButtonProps = {
   workState: WorkState,
   setOnwork: Function,
+  setOffwork: Function,
 };
 
-function Buttons({ workState, setOnwork }: ButtonProps) {
-  const disableOnwork = (workState === WorkState.ON_WORK);
+function Buttons({ workState, setOnwork, setOffwork }: ButtonProps) {
+  const disableOnwork = (workState !== WorkState.BEFORE_WORK);
   const disableOffwork = (workState !== WorkState.ON_WORK);
 
   const handlePressOnwork = () => {
@@ -22,7 +23,7 @@ function Buttons({ workState, setOnwork }: ButtonProps) {
   };
 
   const handlePressOffwork = () => {
-    console.log('퇴근!');
+    setOffwork();
   };
 
   return (
@@ -54,7 +55,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = dispatch => ({
   setOnwork: () => dispatch(AttendanceActionCreators.setOnwork()),
-  // setOffWork: () => dispatch(AttendanceActionCreators.setOffWork),
+  setOffwork: () => dispatch(AttendanceActionCreators.setOffwork()),
 });
 
 export default connect(

@@ -15,11 +15,12 @@ export function* fetchTodayLog() {
     const response = yield call(AttendanceApi.todayAttendanceLog);
     const { onWorkDateTime, offWorkDateTime } = response;
     const workTime = calculateWorkTime(onWorkDateTime, offWorkDateTime);
-
+    const workState = (onWorkDateTime && offWorkDateTime) ? WorkState.OFF_WORK : WorkState.ON_WORK;
     yield put(
       AttendanceActionCreators.fetchTodayLogSuccess({
-        workState: WorkState.ON_WORK,
+        workState,
         onWorkDateTime,
+        offWorkDateTime,
         workTime,
       }),
     );
