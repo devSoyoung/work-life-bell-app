@@ -1,4 +1,5 @@
 import { AttendanceActionTypes } from './attendance.action';
+import moment from 'moment';
 
 import AttendanceStateType from '../../types/store/attendance';
 import WorkState from '../../types/workState';
@@ -8,6 +9,8 @@ export const initialState: AttendanceStateType = {
   isRequestingTodayLog: false,
   isRequestingOnwork: false,
   onWorkDateTime: '',
+  offWorkDateTime: '',
+  workTime: [0, 0, 0],
 };
 
 const accountReducer = (state = initialState, action) => {
@@ -24,6 +27,7 @@ const accountReducer = (state = initialState, action) => {
         isFetchingTodayLog: false,
         workState: action.payload.workState,
         onWorkDateTime: action.payload.onWorkDateTime,
+        workTime: action.payload.workTime,
       };
 
     case AttendanceActionTypes.FETCH_TODAY_LOG_FAILURE:
@@ -43,7 +47,14 @@ const accountReducer = (state = initialState, action) => {
         ...state,
         isRequestingOnwork: false,
         workState: WorkState.ON_WORK,
-        onWorkDateTime: action.payload,
+        onWorkDateTime: action.payload.onWorkDateTime,
+        workTime: action.payload.workTime,
+      };
+
+    case AttendanceActionTypes.ADD_WORK_TIME_SUCCESS:
+      return {
+        ...state,
+        workTime: action.payload,
       };
 
     default:

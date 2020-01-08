@@ -1,4 +1,8 @@
-import RequestApi from '../utils/request';
+// import RequestApi from '../utils/request';
+import axios from 'axios';
+
+const RequestApi = axios.create();
+RequestApi.defaults.baseURL = 'http://api.worklifebell.ryulth.com/';
 
 type AccountData = {
   email: string,
@@ -6,13 +10,13 @@ type AccountData = {
 };
 
 const login = (accountData: AccountData) => {
-  return RequestApi.post('/auth/email/login', {
+  return RequestApi.post('/auth/login/email', {
     ...accountData,
   })
 };
 
 const register = (accountData: AccountData) => {
-  return RequestApi.post('/auth/email/register', {
+  return RequestApi.post('/auth/register/email', {
     ...accountData,
   })
 };

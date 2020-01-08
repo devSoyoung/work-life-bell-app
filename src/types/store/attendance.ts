@@ -5,6 +5,8 @@ type AttendanceStateType = {
   isRequestingTodayLog: boolean,
   isRequestingOnwork: boolean,
   onWorkDateTime: string,
+  offWorkDateTime: string,
+  workTime: number[],
 };
 
 export default AttendanceStateType;

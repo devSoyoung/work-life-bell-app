@@ -11,6 +11,8 @@ export const AttendanceActionTypes = {
   SET_ONWORK_REQUEST: 'SET_ONWORK_REQUEST',
   SET_ONWORK_SUCCESS: 'SET_ONWORK_SUCCESS',
   SET_ONWORK_FAILURE: 'SET_ONWORK_FAILURE',
+  ADD_WORK_TIME: 'ADD_WORK_TIME',
+  ADD_WORK_TIME_SUCCESS: 'ADD_WORK_TIME_SUCCESS',
 };
 
 type AttendanceActionCreatorsType = {
@@ -22,6 +24,8 @@ type AttendanceActionCreatorsType = {
   setOnworkRequest: Function,
   setOnworkSuccess: Function,
   setOnworkFailure: Function,
+  addWorkTime: Function,
+  addWorkTimeSuccess: Function,
 };
 
 export const AttendanceActionCreators: AttendanceActionCreatorsType = {
@@ -33,4 +37,6 @@ export const AttendanceActionCreators: AttendanceActionCreatorsType = {
   setOnworkRequest: makeActionCreator(AttendanceActionTypes.SET_ONWORK_REQUEST),
   setOnworkSuccess: makeActionCreator(AttendanceActionTypes.SET_ONWORK_SUCCESS),
   setOnworkFailure: makeActionCreator(AttendanceActionTypes.SET_ONWORK_FAILURE),
+  addWorkTime: makeActionCreator(AttendanceActionTypes.ADD_WORK_TIME),
+  addWorkTimeSuccess: makeActionCreator(AttendanceActionTypes.ADD_WORK_TIME_SUCCESS),
 };

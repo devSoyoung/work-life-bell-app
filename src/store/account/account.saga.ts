@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { AsyncStorage } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
 
 import { AccountApi } from '../../api';
@@ -9,11 +9,11 @@ export function* login(action) {
   try {
     yield put(AccountActionCreators.loginRequest());
     const response = yield call(AccountApi.login, action.payload);
-    const { accessToken, refreshToken } = response;
+    const { accessToken, refreshToken } = response.data;
 
     yield Promise.all([
-      AsyncStorage.setItem('accessToken', accessToken),
-      AsyncStorage.setItem('refreshToken', refreshToken),
+      SecureStore.setItemAsync('accessToken', JSON.stringify(accessToken)),
+      SecureStore.setItemAsync('refreshToken', JSON.stringify(refreshToken)),
     ]);
 
     yield put(
@@ -34,8 +34,8 @@ export function* register(action) {
     const { accessToken, refreshToken } = response;
 
     yield Promise.all([
-      AsyncStorage.setItem('accessToken', accessToken),
-      AsyncStorage.setItem('refreshToken', refreshToken),
+      SecureStore.setItemAsync('accessToken', accessToken),
+      SecureStore.setItemAsync('refreshToken', refreshToken),
     ]);
 
     yield put(
