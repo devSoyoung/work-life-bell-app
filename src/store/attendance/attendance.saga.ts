@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 
 import { AttendanceApi } from '../../api';
@@ -6,15 +6,21 @@ import { AttendanceActionTypes, AttendanceActionCreators } from './attendance.ac
 
 import WorkState from '../../types/workState';
 
+import { calculateWorkTime } from '../../utils/timeCalculator';
+import moment from 'moment';
+
 export function* fetchTodayLog() {
   try {
     yield put(AttendanceActionCreators.fetchTodayLogRequest());
     const response = yield call(AttendanceApi.todayAttendanceLog);
-    const { onWorkDateTime } = response;
+    const { onWorkDateTime, offWorkDateTime } = response;
+    const workTime = calculateWorkTime(onWorkDateTime, offWorkDateTime);
+
     yield put(
       AttendanceActionCreators.fetchTodayLogSuccess({
         workState: WorkState.ON_WORK,
         onWorkDateTime,
+        workTime,
       }),
     );
 
@@ -35,8 +41,14 @@ export function* setOnWork() {
   try {
     yield put(AttendanceActionCreators.setOnworkRequest());
     const response = yield call(AttendanceApi.setOnWork);
-    const { onWorkDate, onWorkDateTime } = response;
-    yield put(AttendanceActionCreators.setOnworkSuccess(onWorkDateTime));
+    const { onWorkDateTime, offWorkDateTime } = response;
+    // const workTime = moment(calculateWorkTime(onWorkDateTime, offWorkDateTime).join(":"), "HH:mm:ss");
+    const workTime = calculateWorkTime(onWorkDateTime, offWorkDateTime);
+
+    yield put(AttendanceActionCreators.setOnworkSuccess({
+      onWorkDateTime,
+      workTime,
+    }));
   } catch (error) {
     if (error.response.status === 409) {
       Alert.alert('출근 등록 실패', '오늘의 출근시간이 이미 등록되었습니다.');
@@ -48,7 +60,18 @@ export function* setOnWork() {
   }
 }
 
+const getWorkTime = (state) => state.attendance.workTime;
+
+export function* addWorkTime() {
+  const workTime = yield select(getWorkTime);
+  const addedWorkTime = moment(workTime.join(":"), "HH:mm:ss").add(1, "s");
+  console.log('workTime:', addedWorkTime);
+  const newWorkTime = [addedWorkTime.hours(), addedWorkTime.minutes(), addedWorkTime.seconds()];
+  yield put(AttendanceActionCreators.addWorkTimeSuccess(newWorkTime));
+}
+
 export const attendanceSagas = [
   takeLatest(AttendanceActionTypes.FETCH_TODAY_LOG, fetchTodayLog),
   takeLatest(AttendanceActionTypes.SET_ONWORK, setOnWork),
+  takeLatest(AttendanceActionTypes.ADD_WORK_TIME, addWorkTime),
 ];

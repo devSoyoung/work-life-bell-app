@@ -1,19 +1,40 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Text, StyleSheet, View } from 'react-native';
 import moment from 'moment';
 
 import StateType from '../types/store';
-import { calculateWorkTime, padNumber } from '../utils/timeCalculator';
+import { padNumber } from '../utils/timeCalculator';
+import {AttendanceActionCreators} from "../store/attendance/attendance.action";
 
 // state : 출근전, 출근, 퇴근
 type TimerProps = {
   onWorkDateTime: string,
   offWorkDateTime: string,
+  workTime: number[],
+  addWorkTime: Function,
 };
 
-function Timer({ onWorkDateTime, offWorkDateTime }: TimerProps) {
-  const workingTime = moment(calculateWorkTime(onWorkDateTime, offWorkDateTime).join(":"), "HH:mm:ss");
+function Timer({ onWorkDateTime, offWorkDateTime, workTime, addWorkTime }: TimerProps) {
+  // const hours = useMemo(() => workTime ? workTime.hours() : 0, [workTime]);
+  // const minutes = useMemo(() => workTime ? workTime.minutes() : 0, [workTime]);
+  // const seconds = useMemo(() => workTime ? workTime.seconds() : 0, [workTime]);
+
+  const [hours, minutes, seconds] = workTime;
+
+  useEffect(() => {
+    let interval;
+    if (onWorkDateTime && !offWorkDateTime) {
+      interval = setInterval(() => {
+        addWorkTime();
+      }, 1000);
+    }
+
+    return () => {
+      console.log('clearInterval called');
+      clearInterval(interval);
+    };
+  }, [onWorkDateTime, offWorkDateTime]);
 
   return (
     <View style={styles.container}>
@@ -24,7 +45,7 @@ function Timer({ onWorkDateTime, offWorkDateTime }: TimerProps) {
 
       <Text style={styles.subtitle}>오늘 일한 시간</Text>
       <Text style={styles.timer}>
-        {padNumber(workingTime.hour() || 0, 2)} : {padNumber(workingTime.minutes() || 0, 2)} : {padNumber(workingTime.seconds() || 0, 2)}
+        {padNumber(hours, 2)} : {padNumber(minutes, 2)} : {padNumber(seconds, 2)}
       </Text>
     </View>
   );
@@ -33,10 +54,11 @@ function Timer({ onWorkDateTime, offWorkDateTime }: TimerProps) {
 const mapStateToProps = (state: StateType) => ({
   onWorkDateTime: state.attendance.onWorkDateTime,
   offWorkDateTime: state.attendance.offWorkDateTime,
+  workTime: state.attendance.workTime,
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  addWorkTime: () => dispatch(AttendanceActionCreators.addWorkTime()),
 });
 
 export default connect(
