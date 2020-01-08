@@ -1,7 +1,6 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Text, StyleSheet, View } from 'react-native';
-import moment from 'moment';
 
 import StateType from '../types/store';
 import { padNumber } from '../utils/timeCalculator';
@@ -16,10 +15,6 @@ type TimerProps = {
 };
 
 function Timer({ onWorkDateTime, offWorkDateTime, workTime, addWorkTime }: TimerProps) {
-  // const hours = useMemo(() => workTime ? workTime.hours() : 0, [workTime]);
-  // const minutes = useMemo(() => workTime ? workTime.minutes() : 0, [workTime]);
-  // const seconds = useMemo(() => workTime ? workTime.seconds() : 0, [workTime]);
-
   const [hours, minutes, seconds] = workTime;
 
   useEffect(() => {
@@ -31,7 +26,6 @@ function Timer({ onWorkDateTime, offWorkDateTime, workTime, addWorkTime }: Timer
     }
 
     return () => {
-      console.log('clearInterval called');
       clearInterval(interval);
     };
   }, [onWorkDateTime, offWorkDateTime]);
